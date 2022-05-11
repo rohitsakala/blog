@@ -268,7 +268,7 @@ stream {
 
     upstream k3s_api_server {
         least_conn;
-        server 10.161.129.54:9643 max_fails=3 fail_timeout=5s;
+        server 10.161.129.54:6443 max_fails=3 fail_timeout=5s;
         server 10.161.129.154:6443 max_fails=3 fail_timeout=5s;
     }
     server {
