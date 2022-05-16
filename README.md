@@ -320,11 +320,11 @@ k3s-agent      Ready    <none>                 105s   v1.23.6+k3s1
 So, we have successfully installed postgres, K3S servers and a K3S agent. You now a highly available K3S cluster with an external database. Note that full HA is only achieved if postgres is also deployed in HA configuration.
 
 # References 
-K3S Architechture Docs - https://rancher.com/docs/k3s/latest/en/architecture/#high-availability-with-an-external-db 
-K3S Datastore Docs -
+- K3S Architechture Docs - https://rancher.com/docs/k3s/latest/en/architecture/#high-availability-with-an-external-db 
+- K3S Datastore Docs -
 https://rancher.com/docs/k3s/latest/en/installation/datastore/
-K3s installation Docs -
+- K3s installation Docs -
 https://rancher.com/docs/k3s/latest/en/installation/ha/
-Nginx Load Balancer Docs - 
+- Nginx Load Balancer Docs - 
 https://rancher.com/docs/rancher/v2.5/en/installation/resources/k8s-tutorials/infrastructure-tutorials/nginx/
   
