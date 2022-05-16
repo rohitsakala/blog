@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this blog, I will explain how to deploy K3S in HA configuration with an external database postgres. [K3S](https://k3s.io/) is a certified kubernetes distribution for IoT and Edge computing. I deployed it on virtual machines in a IBM Z mainframe. Instead of etcd, I choose postgres as my storage for my K3S clusters. I deployed postgres in non HA mode. For information on how to deploy postgres in HA mode go though their [official documention](https://www.postgresql.org/docs/13/high-availability.html). The communication between postgres and the K3S cluster is SSL secured. I used nginx at layer 4 in front of my K3S servers for load balancing. This is because the K3S cluster server IP's may change or we may add new server nodes or a server might go down. So, instead of the K3S server IP's, if we use the loadbalancer, we don't face such issues and also achieve HA.
+In this blog, I will explain how to deploy K3S in HA configuration with an external database postgres. [K3S](https://k3s.io/) is a certified kubernetes distribution for IoT and Edge computing. I deployed it on virtual machines in a IBM Z mainframe. Instead of etcd, I choose postgres as my storage for my K3S clusters. I deployed postgres in non HA mode. For information on how to deploy postgres in HA mode go though their [official documention](https://www.postgresql.org/docs/13/high-availability.html). The communication between postgres and the K3S cluster is SSL secured. I used nginx at layer 4 in front of my K3S servers for load balancing. This is because that we may add new server nodes or a server might go down. So, instead of the K3S server IP's, if we use the loadbalancer, we don't face such issues and also achieve HA.
 
 ## HA Configuration
 
@@ -126,7 +126,7 @@ mv /home/sles/k3s.crt /var/lib/pgsql/data/
 * Modify the contents of `/var/lib/pgsql/data/postgresql.conf` with the following values
 
 ```
-listen_addresses = '10.161.129.212'
+listen_addresses = '*'
 ssl = on
 #ssl_ciphers = 'HIGH:MEDIUM:+3DES:!aNULL' # allowed SSL ciphers
 #ssl_prefer_server_ciphers = on
@@ -137,7 +137,7 @@ ssl_key_file = '/var/lib/pgsql/data/postgres.key'
 ssl_ca_file = '/var/lib/pgsql/data/k3s.crt'
 ```
 
-`listen_addresses` : should be the IP of your postgres server. This makes sure that postgres server is listening on the node's IP address. 
+`listen_addresses` : should be `*` or the IP of your postgres server. This makes sure that postgres server is listening on the node's IP address. 
 
 `ssl` : Turn on the ssl so that communication only happens in a secured way.
 `ssl_cert_file` `ssl_key_file` : These certificates identify the postgres database. We already created them at the start of the blog. Now, we just point them to the cert locations. 
@@ -284,7 +284,7 @@ We are using the `least_conn` algorithm to decide which K3S server should the re
 
 ```
 nginx -s reload
-service nginx restart
+systemctl reload nginx && systemctl restart nginx
 ```
 
 Now, we setup our load balancer and so anyone can now talk to our K3S servers. Lets now add a K3S agent which talks to this load balancer and registers itself.
