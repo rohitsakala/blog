@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this blog, I will explain how to deploy K3S in HA configuration with an external database postgres. [K3S](https://k3s.io/) is a certified kubernetes distribution for IoT and Edge computing. I deployed it on virtual machines in a IBM Z mainframe. Instead of etcd, I choose postgres as my storage for my K3S clusters. I deployed postgres in non HA mode. For information on how to deploy postgres in HA mode go though their [official documention](https://www.postgresql.org/docs/13/high-availability.html). The communication between postgres and the K3S cluster is SSL secured. I used nginx at layer 4 in front of my K3S servers for load balancing. This is because that we may add new server nodes or a server might go down. So, instead of the K3S server IP's, if we use the loadbalancer, we don't face such issues and also achieve HA.
+Having trouble deploying kubernetes in a highly available mode and have a backing remote database? This blog is for you. I will explain how to deploy K3S in HA configuration with an external database postgres. [K3S](https://k3s.io/) is a certified kubernetes distribution for IoT and Edge computing. I deployed it on virtual machines in a IBM Z mainframe. Instead of etcd, I choose postgres as my storage for my K3S clusters. I deployed postgres in non HA mode. For information on how to deploy postgres in HA mode go though their [official documention](https://www.postgresql.org/docs/13/high-availability.html). The communication between postgres and the K3S cluster is SSL secured. I used nginx at layer 4 in front of my K3S servers for load balancing. This is because that we may add new server nodes or a server might go down. So, instead of the K3S server IP's, if we use the loadbalancer, we don't face such issues and also achieve HA. Note that, the nginx load balacner can also become a single point of failure. For information on deploying nginx in HA mode go through [Nginx](https://www.nginx.com/products/nginx/high-availability/).
 
 ## HA Configuration
 
@@ -317,7 +317,7 @@ k3s-agent      Ready    <none>                 105s   v1.23.6+k3s1
 ```
 
 
-So, we have successfully installed postgres, K3S servers and a K3S agent. You now a highly available K3S cluster with an external database. Note that full HA is only achieved if postgres is also deployed in HA configuration.
+So, we have successfully installed postgres, K3S servers and a K3S agent. You now a highly available K3S cluster with an external database. Note that full HA is only achieved if postgres and nginx are also deployed in HA configuration. For more information you can checkout the links in the reference section.
 
 # References 
 - K3S Architechture Docs - https://rancher.com/docs/k3s/latest/en/architecture/#high-availability-with-an-external-db 
